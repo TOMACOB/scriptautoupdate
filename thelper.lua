@@ -1,12 +1,12 @@
+script_name("THELPER")
+script_version("12.07.2025")
+
 local imgui = require 'mimgui'
 local ffi = require 'ffi'
 local encoding = require 'encoding'
 encoding.default = 'CP1251'
 local sampev = require('lib.samp.events')
 local u8 = encoding.UTF8
-
-script_name("THELPER")
-script_version("12.07.2025")
 
 local enable_autoupdate = true -- false to disable auto-update + disable sending initial telemetry (server, moonloader version, script version, samp nickname, virtual volume serial number)
 local autoupdate_loaded = false
