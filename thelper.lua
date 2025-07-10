@@ -1,5 +1,5 @@
 script_name("THELPER")
-script_version("11.07.2025")
+script_version("12.07.2025")
 
 local imgui = require 'mimgui'
 local ffi = require 'ffi'
