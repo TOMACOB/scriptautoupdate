@@ -5,6 +5,9 @@ encoding.default = 'CP1251'
 local sampev = require('lib.samp.events')
 local u8 = encoding.UTF8
 
+script_name("THELPER")
+script_version("11.07.2025")
+
 local inicfg = require "inicfg"
 local currentTab = imgui.new.int(0)
 local promo = '#tomasow'
