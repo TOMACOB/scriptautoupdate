@@ -55,7 +55,6 @@ local healthCheckEnabled = imgui.new.bool(false)
 local breakCheckEnabled = imgui.new.bool(false)
 local deletebat = imgui.new.bool(false)
 local autoexitdnk = imgui.new.bool(false)
-local actived = imgui.new.bool(false)
 
 function getCurrentServer(name)
     if name:find('Evolve%-Rp') then return 1 end
@@ -345,7 +344,7 @@ local newFrame = imgui.OnFrame(
                 end
                 saveCheckboxStates() -- Сохраните состояние чекбоксов при изменении
             end
-                imgui.Checkbox('ZALUPA', actived) 
+            
             
         else
             imgui.Text(u8'AutoUseDrugs - /autous, при смерти автоматически использует нар%@#^#и. ')
