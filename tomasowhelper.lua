@@ -1,7 +1,7 @@
 -- Объединенный скрипт
 
 script_name("TOMASOWHELPER")
-script_version("16.07.2025")
+script_version("17.07.2025")
 
 local imgui = require 'mimgui'
 local ffi = require 'ffi'
@@ -395,7 +395,7 @@ local newFrame = imgui.OnFrame(
         local windowWidth = imgui.GetWindowWidth()
         local buttonSpacing = 10
         local totalWidth = 2 * 30 + buttonSpacing
-        imgui.SetCursorPosY(imgui.GetWindowHeight() - 40)
+        imgui.SetCursorPosY(imgui.GetWindowHeight() - 70) -- Увеличил отступ для текста
         imgui.SetCursorPosX((windowWidth - totalWidth) / 2)
         if imgui.Button("1", imgui.ImVec2(30, 20)) then
             currentTab[0] = 0
@@ -404,6 +404,10 @@ local newFrame = imgui.OnFrame(
         if imgui.Button("2", imgui.ImVec2(30, 20)) then
             currentTab[0] = 1
         end
+        -- Добавленный текст
+        imgui.SetCursorPosY(imgui.GetWindowHeight() - 40) -- Позиция для текста
+        imgui.SetCursorPosX((windowWidth - imgui.CalcTextSize("author: tomasow, Нейросеть").x) / 2) -- Центрирование текста
+        imgui.Text("author: tomasow, Нейросеть")
         imgui.End()
     end
 )
