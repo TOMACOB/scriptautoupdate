@@ -1,6 +1,6 @@
 -- Объединенный скрипт
 
-script_name("TOMASOWHELPER")
+script_name("moonloader-script-updater-example")
 script_version("15.07.2025")
 
 local imgui = require 'mimgui'
