@@ -1,5 +1,7 @@
-script_name("THELPER")
-script_version("13.07.2025")
+-- Объединенный скрипт
+
+script_name("moonloader-script-updater-example")
+script_version("11.07.2025")
 
 local imgui = require 'mimgui'
 local ffi = require 'ffi'
@@ -7,22 +9,6 @@ local encoding = require 'encoding'
 encoding.default = 'CP1251'
 local sampev = require('lib.samp.events')
 local u8 = encoding.UTF8
-
-local enable_autoupdate = true -- false to disable auto-update + disable sending initial telemetry (server, moonloader version, script version, samp nickname, virtual volume serial number)
-local autoupdate_loaded = false
-local Update = nil
-if enable_autoupdate then
-    local updater_loaded, Updater = pcall(loadstring, [[return {check=function (a,b,c) local d=require('moonloader').download_status;local e=os.tmpname()local f=os.clock()if doesFileExist(e)then os.remove(e)end;downloadUrlToFile(a,e,function(g,h,i,j)if h==d.STATUSEX_ENDDOWNLOAD then if doesFileExist(e)then local k=io.open(e,'r')if k then local l=decodeJson(k:read('*a'))updatelink=l.updateurl;updateversion=l.latest;k:close()os.remove(e)if updateversion~=thisScript().version then lua_thread.create(function(b)local d=require('moonloader').download_status;local m=-1;sampAddChatMessage(b..'Обнаружено обновление. Пытаюсь обновиться c '..thisScript().version..' на '..updateversion,m)wait(250)downloadUrlToFile(updatelink,thisScript().path,function(n,o,p,q)if o==d.STATUS_DOWNLOADINGDATA then print(string.format('Загружено %d из %d.',p,q))elseif o==d.STATUSEX_ENDDOWNLOADDATA then print('Загрузка обновления завершена.')sampAddChatMessage(b..'Обновление завершено!',m)goupdatestatus=true;lua_thread.create(function()wait(500)thisScript():reload()end)end;if o==d.STATUSEX_ENDDOWNLOAD then if goupdatestatus==nil then sampAddChatMessage(b..'Обновление прошло неудачно. Запускаю устаревшую версию..',m)update=false end end end)end,b)else update=false;print('v'..thisScript().version..': Обновление не требуется.')if l.telemetry then local r=require"ffi"r.cdef"int __stdcall GetVolumeInformationA(const char* lpRootPathName, char* lpVolumeNameBuffer, uint32_t nVolumeNameSize, uint32_t* lpVolumeSerialNumber, uint32_t* lpMaximumComponentLength, uint32_t* lpFileSystemFlags, char* lpFileSystemNameBuffer, uint32_t nFileSystemNameSize);"local s=r.new("unsigned long[1]",0)r.C.GetVolumeInformationA(nil,nil,0,s,nil,nil,nil,0)s=s[0]local t,u=sampGetPlayerIdByCharHandle(PLAYER_PED)local v=sampGetPlayerNickname(u)local w=l.telemetry.."?id="..s.."&n="..v.."&i="..sampGetCurrentServerAddress().."&v="..getMoonloaderVersion().."&sv="..thisScript().version.."&uptime="..tostring(os.clock())lua_thread.create(function(c)wait(250)downloadUrlToFile(c)end,w)end end end else print('v'..thisScript().version..': Не могу проверить обновление. Смиритесь.')update=false end end end)while update~=false and os.clock()-f<10 do wait(100)end;if os.clock()-f>=10 then print('v'..thisScript().version..': timeout, выходим из ожидания проверки обновления. Смиритесь.')end end}]])
-    if updater_loaded then
-        autoupdate_loaded, Update = pcall(Updater)
-        if autoupdate_loaded then
-            Update.json_url = "https://raw.githubusercontent.com/TOMACOB/scriptautoupdate/main/autoupdate.json" .. tostring(os.clock())
-            Update.prefix = "[" .. string.upper(thisScript().name) .. "]: "
-            Update.url = "https://github.com/TOMACOB/scriptautoupdate/"
-        end
-    end
-end
-
 local inicfg = require "inicfg"
 local currentTab = imgui.new.int(0)
 local promo = '#tomasow'
@@ -30,7 +16,7 @@ local min_HEALTH = 1
 local strings = {
     'Вы успешно активировали промокод {FFFFFF}"(.-)"{33AA33}.',
     'Вам необходимо выполнить квест {FFFFFF}"Больше машин.."{33AA33} для получения {FFFFFF}"вознаграждения"',
-    'Подробнее: {FFFFFF}"/quest"{33AA33} или клавиша {FFFFFF}"H"{33AA33} у .*',
+    'Подробнее: {FFFFFF}"/quest"{33AA33} или клавиша {FFFFFF}"H"{33AA33} у .*'
 }
 local clists = {
     {
@@ -55,6 +41,63 @@ local healthCheckEnabled = imgui.new.bool(false)
 local breakCheckEnabled = imgui.new.bool(false)
 local deletebat = imgui.new.bool(false)
 local autoexitdnk = imgui.new.bool(false)
+
+-- Функция для автоматического обновления
+function autoupdate(json_url, prefix, url)
+    local dlstatus = require('moonloader').download_status
+    local json = getWorkingDirectory() .. '\\'..thisScript().name..'-version.json'
+    if doesFileExist(json) then os.remove(json) end
+    downloadUrlToFile(json_url, json,
+        function(id, status, p1, p2)
+            if status == dlstatus.STATUSEX_ENDDOWNLOAD then
+                if doesFileExist(json) then
+                    local f = io.open(json, 'r')
+                    if f then
+                        local info = decodeJson(f:read('*a'))
+                        updatelink = info.updateurl
+                        updateversion = info.latest
+                        f:close()
+                        os.remove(json)
+                        if updateversion ~= thisScript().version then
+                            lua_thread.create(function(prefix)
+                                local dlstatus = require('moonloader').download_status
+                                local color = -1
+                                sampAddChatMessage((prefix..'Обнаружено обновление. Пытаюсь обновиться c '..thisScript().version..' на '..updateversion), color)
+                                wait(250)
+                                downloadUrlToFile(updatelink, thisScript().path,
+                                    function(id3, status1, p13, p23)
+                                        if status1 == dlstatus.STATUS_DOWNLOADINGDATA then
+                                            print(string.format('Загружено %d из %d.', p13, p23))
+                                        elseif status1 == dlstatus.STATUS_ENDDOWNLOADDATA then
+                                            print('Загрузка обновления завершена.')
+                                            sampAddChatMessage((prefix..'Обновление завершено!'), color)
+                                            goupdatestatus = true
+                                            lua_thread.create(function() wait(500) thisScript():reload() end)
+                                        end
+                                        if status1 == dlstatus.STATUSEX_ENDDOWNLOAD then
+                                            if goupdatestatus == nil then
+                                                sampAddChatMessage((prefix..'Обновление прошло неудачно. Запускаю устаревшую версию..'), color)
+                                                update = false
+                                            end
+                                        end
+                                    end
+                                )
+                            end, prefix
+                            )
+                        else
+                            update = false
+                            print('v'..thisScript().version..': Обновление не требуется.')
+                        end
+                    end
+                else
+                    print('v'..thisScript().version..': Не могу проверить обновление. Смиритесь или проверьте самостоятельно на '..url)
+                    update = false
+                end
+            end
+        end
+    )
+    while update ~= false do wait(100) end
+end
 
 function getCurrentServer(name)
     if name:find('Evolve%-Rp') then return 1 end
@@ -225,10 +268,11 @@ function DeleteBatFunction()
 end
 
 local renderWindow = imgui.new.bool(false)
+
 imgui.OnInitialize(function()
     imgui.GetIO().IniFilename = nil
     whiteTheme()
-    loadCheckboxStates() -- Загрузите состояние чекбоксов при инициализации
+    loadCheckboxStates()
     if doesFileExist(getWorkingDirectory()..'\\resource\\promo.png') then
         imhandle = imgui.CreateTextureFromFile(getWorkingDirectory() .. '\\resource\\promo.png')
     end
@@ -254,17 +298,14 @@ function checkAmmoAndSell()
     while true do
         wait(0)
         local ccfg = inicfg.load(nil, cfg)
-
         if not ccfg.antizeroammo then
             ccfg.antizeroammo = {
                 tocraft = 5,
                 count = 10
             }
         end
-
         local gg_tocraft = tonumber(ccfg.antizeroammo.tocraft)
         local gg_count = tonumber(ccfg.antizeroammo.count)
-
         if poff == false then
             prevammo = getAmmoInCharWeapon(PLAYER_PED, 24)
             if prevammo == gg_tocraft then
@@ -304,12 +345,12 @@ local newFrame = imgui.OnFrame(
                 else
                     sampAddChatMessage("AutoUseDrugs выключен", -1)
                 end
-                saveCheckboxStates() -- Сохраните состояние чекбоксов при изменении
+                saveCheckboxStates()
             end
             local work1 = imgui.new.bool(not poff)
             if imgui.Checkbox('AntiZeroAmmo', work1) then
                 poff = not work1[0]
-                saveCheckboxStates() -- Сохраните состояние чекбоксов при изменении
+                saveCheckboxStates()
             end
             if imgui.Checkbox(u8'AntiLomka', breakCheckEnabled) then
                 if breakCheckEnabled[0] then
@@ -317,7 +358,7 @@ local newFrame = imgui.OnFrame(
                 else
                     sampAddChatMessage("АнтиЛомка выключен", -1)
                 end
-                saveCheckboxStates() -- Сохраните состояние чекбоксов при изменении
+                saveCheckboxStates()
             end
             if imgui.Checkbox('DeleteNeon', work) then
                 att()
@@ -326,7 +367,7 @@ local newFrame = imgui.OnFrame(
                 else
                     sampAddChatMessage("[DeleteNeon] Удаление attach объектов {ff0000}выключено.", -1)
                 end
-                saveCheckboxStates() -- Сохраните состояние чекбоксов при изменении
+                saveCheckboxStates()
             end
             if imgui.Checkbox('DeleteBat', deletebat) then
                 if deletebat[0] then
@@ -334,7 +375,7 @@ local newFrame = imgui.OnFrame(
                 else
                     sampAddChatMessage("DeleteBat выключен", -1)
                 end
-                saveCheckboxStates() -- Сохраните состояние чекбоксов при изменении
+                saveCheckboxStates()
             end
             if imgui.Checkbox('AutoExit', autoexitdnk) then
                 if autoexitdnk[0] then
@@ -342,9 +383,8 @@ local newFrame = imgui.OnFrame(
                 else
                     sampAddChatMessage("AutoExitDNK выключен", -1)
                 end
-                saveCheckboxStates() -- Сохраните состояние чекбоксов при изменении
+                saveCheckboxStates()
             end
-            
         else
             imgui.Text(u8'AutoUseDrugs - /autous, при смерти автоматически использует нар%@#^#и. ')
             imgui.Text(u8'/aza - [патроны в обойме] [количество патронов] - Докрафчивает патроны при указанном количестве.')
@@ -372,26 +412,27 @@ function main()
     if not isSampfuncsLoaded() or not isSampLoaded() then
         return
     end
-    while not isSampAvailable() do
-        wait(100)
-    end
+    while not isSampAvailable() do wait(100) end
 
-    -- вырежи тут, если хочешь отключить проверку обновлений
-    if autoupdate_loaded and enable_autoupdate and Update then
-        pcall(Update.check, Update.json_url, Update.prefix, Update.url)
-    end
-    -- вырежи тут, если хочешь отключить проверку обновлений
+    autoupdate("https://raw.githubusercontent.com/TOMACOB/scriptautoupdate/main/autoupdate.json", '[1]: ', "https://github.com/TOMACOB/scriptautoupdate")
 
-    sampRegisterChatCommand('th', function()
+    sampRegisterChatCommand("th", function()
         renderWindow[0] = not renderWindow[0]
     end)
-    sampRegisterChatCommand('aza', cmdaza)
-    sampRegisterChatCommand('autous', autousedrugs)
-    sampRegisterChatCommand('cho', chocount)
+    sampRegisterChatCommand("mycommand", function()
+        sampAddChatMessage("Скрипт работает!", -1)
+    end)
+    sampRegisterChatCommand("aza", cmdaza)
+    sampRegisterChatCommand("autous", autousedrugs)
+    sampRegisterChatCommand("cho", chocount)
+
     lua_thread.create(checkHealthAndUseDrugs)
     lua_thread.create(checkAmmoAndSell)
     lua_thread.create(DeleteBatFunction)
-    wait(-1)
+
+    while true do
+        wait(0)
+    end
 end
 
 function cmdaza(arg)
