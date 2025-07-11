@@ -341,56 +341,56 @@ local newFrame = imgui.OnFrame(
         if currentTab[0] == 0 then
             if imgui.Checkbox('AutoUseDrugs', healthCheckEnabled) then
                 if healthCheckEnabled[0] then
-                    sampAddChatMessage("AutoUseDrugs РІРєР»СЋС‡РµРЅ", -1)
+                    sampAddChatMessage("AutoUseDrugs включен", -1)
                 else
-                    sampAddChatMessage("AutoUseDrugs РІС‹РєР»СЋС‡РµРЅ", -1)
+                    sampAddChatMessage("AutoUseDrugs выключен", -1)
                 end
-                saveCheckboxStates()
+                saveCheckboxStates() 
             end
             local work1 = imgui.new.bool(not poff)
             if imgui.Checkbox('AntiZeroAmmo', work1) then
                 poff = not work1[0]
-                saveCheckboxStates()
+                saveCheckboxStates() 
             end
             if imgui.Checkbox(u8'AntiLomka', breakCheckEnabled) then
                 if breakCheckEnabled[0] then
-                    sampAddChatMessage("РђРЅС‚РёР›РѕРјРєР° РІРєР»СЋС‡РµРЅ", -1)
+                    sampAddChatMessage("АнтиЛомка включен", -1)
                 else
-                    sampAddChatMessage("РђРЅС‚РёР›РѕРјРєР° РІС‹РєР»СЋС‡РµРЅ", -1)
+                    sampAddChatMessage("АнтиЛомка выключен", -1)
                 end
-                saveCheckboxStates()
+                saveCheckboxStates() 
             end
             if imgui.Checkbox('DeleteNeon', work) then
                 att()
                 if work[0] then
-                    sampAddChatMessage("[DeleteNeon] РЈРґР°Р»РµРЅРёРµ attach РѕР±СЉРµРєС‚РѕРІ {00ff00}РІРєР»СЋС‡РµРЅРѕ. {FFFFFF}Р”Р»СЏ СЂР°Р±РѕС‚С‹ РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµР·Р°Р№С‚Рё РІ Р·РѕРЅСѓ СЃС‚СЂРёРјР°.", -1)
+                    sampAddChatMessage("[DeleteNeon] Удаление attach объектов {00ff00}включено. {FFFFFF}Для работы необходимо перезайти в зону стрима.", -1)
                 else
-                    sampAddChatMessage("[DeleteNeon] РЈРґР°Р»РµРЅРёРµ attach РѕР±СЉРµРєС‚РѕРІ {ff0000}РІС‹РєР»СЋС‡РµРЅРѕ.", -1)
+                    sampAddChatMessage("[DeleteNeon] Удаление attach объектов {ff0000}выключено.", -1)
                 end
-                saveCheckboxStates()
+                saveCheckboxStates() 
             end
             if imgui.Checkbox('DeleteBat', deletebat) then
                 if deletebat[0] then
-                    sampAddChatMessage("DeleteBat РІРєР»СЋС‡РµРЅ", -1)
+                    sampAddChatMessage("DeleteBat включен", -1)
                 else
-                    sampAddChatMessage("DeleteBat РІС‹РєР»СЋС‡РµРЅ", -1)
+                    sampAddChatMessage("DeleteBat выключен", -1)
                 end
-                saveCheckboxStates()
+                saveCheckboxStates() 
             end
             if imgui.Checkbox('AutoExit', autoexitdnk) then
                 if autoexitdnk[0] then
-                    sampAddChatMessage("AutoExitDNK РІРєР»СЋС‡РµРЅ", -1)
+                    sampAddChatMessage("AutoExitDNK включен", -1)
                 else
-                    sampAddChatMessage("AutoExitDNK РІС‹РєР»СЋС‡РµРЅ", -1)
+                    sampAddChatMessage("AutoExitDNK выключен", -1)
                 end
-                saveCheckboxStates()
+                saveCheckboxStates() 
             end
         else
-            imgui.Text(u8'AutoUseDrugs - /autous, РїСЂРё СЃРјРµСЂС‚Рё Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РёСЃРїРѕР»СЊР·СѓРµС‚ РЅР°СЂ%@#^#Рё. ')
-            imgui.Text(u8'/aza - [РїР°С‚СЂРѕРЅС‹ РІ РѕР±РѕР№РјРµ] [РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°С‚СЂРѕРЅРѕРІ] - Р”РѕРєСЂР°С„С‡РёРІР°РµС‚ РїР°С‚СЂРѕРЅС‹ РїСЂРё СѓРєР°Р·Р°РЅРЅРѕРј РєРѕР»РёС‡РµСЃС‚РІРµ.')
-            imgui.Text(u8'/cho - Р§РµРєРµСЂ РѕРЅР»Р°Р№РЅР° Р±Р°РЅРґ.')
-            imgui.Text(u8'AntiLomka - РїСЂРё Р»РѕРјРєРµ Р°РІС‚РѕРјР°С‚РѕРј РёСЃРїРѕР»СЊР·СѓРµС‚ Рё СЃР±РёРІР°РµС‚ РЅР°СЂ%@#^#Рё. ')
-            imgui.Text(u8'DeleteNeon - СѓР±РёСЂР°РµС‚ РЅР°РґРїРёСЃРё/РЅРµРѕРЅ РЅР° РјР°С€РёРЅР°С…. ')
+            imgui.Text(u8'AutoUseDrugs - /autous, при смерти автоматически использует нар%@#^#и. ')
+            imgui.Text(u8'/aza - [патроны в обойме] [количество патронов] - Докрафчивает патроны при указанном количестве.')
+            imgui.Text(u8'/cho - Чекер онлайна банд.')
+            imgui.Text(u8'AntiLomka - при ломке автоматом использует и сбивает нар%@#^#и. ')
+            imgui.Text(u8'DeleteNeon - убирает надписи/неон на машинах. ')
         end
         local windowWidth = imgui.GetWindowWidth()
         local buttonSpacing = 10
