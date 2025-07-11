@@ -1,7 +1,7 @@
 -- Объединенный скрипт
 
 script_name("TOMASOWHELPER")
-script_version("17.07.2025")
+script_version("12.07.2025")
 
 local imgui = require 'mimgui'
 local ffi = require 'ffi'
@@ -341,9 +341,9 @@ local newFrame = imgui.OnFrame(
         if currentTab[0] == 0 then
             if imgui.Checkbox('AutoUseDrugs', healthCheckEnabled) then
                 if healthCheckEnabled[0] then
-                    sampAddChatMessage("AutoUseDrugs включен", -1)
+                    sampAddChatMessage("AutoUseDrugs РІРєР»СЋС‡РµРЅ", -1)
                 else
-                    sampAddChatMessage("AutoUseDrugs выключен", -1)
+                    sampAddChatMessage("AutoUseDrugs РІС‹РєР»СЋС‡РµРЅ", -1)
                 end
                 saveCheckboxStates()
             end
@@ -354,48 +354,48 @@ local newFrame = imgui.OnFrame(
             end
             if imgui.Checkbox(u8'AntiLomka', breakCheckEnabled) then
                 if breakCheckEnabled[0] then
-                    sampAddChatMessage("АнтиЛомка включен", -1)
+                    sampAddChatMessage("РђРЅС‚РёР›РѕРјРєР° РІРєР»СЋС‡РµРЅ", -1)
                 else
-                    sampAddChatMessage("АнтиЛомка выключен", -1)
+                    sampAddChatMessage("РђРЅС‚РёР›РѕРјРєР° РІС‹РєР»СЋС‡РµРЅ", -1)
                 end
                 saveCheckboxStates()
             end
             if imgui.Checkbox('DeleteNeon', work) then
                 att()
                 if work[0] then
-                    sampAddChatMessage("[DeleteNeon] Удаление attach объектов {00ff00}включено. {FFFFFF}Для работы необходимо перезайти в зону стрима.", -1)
+                    sampAddChatMessage("[DeleteNeon] РЈРґР°Р»РµРЅРёРµ attach РѕР±СЉРµРєС‚РѕРІ {00ff00}РІРєР»СЋС‡РµРЅРѕ. {FFFFFF}Р”Р»СЏ СЂР°Р±РѕС‚С‹ РЅРµРѕР±С…РѕРґРёРјРѕ РїРµСЂРµР·Р°Р№С‚Рё РІ Р·РѕРЅСѓ СЃС‚СЂРёРјР°.", -1)
                 else
-                    sampAddChatMessage("[DeleteNeon] Удаление attach объектов {ff0000}выключено.", -1)
+                    sampAddChatMessage("[DeleteNeon] РЈРґР°Р»РµРЅРёРµ attach РѕР±СЉРµРєС‚РѕРІ {ff0000}РІС‹РєР»СЋС‡РµРЅРѕ.", -1)
                 end
                 saveCheckboxStates()
             end
             if imgui.Checkbox('DeleteBat', deletebat) then
                 if deletebat[0] then
-                    sampAddChatMessage("DeleteBat включен", -1)
+                    sampAddChatMessage("DeleteBat РІРєР»СЋС‡РµРЅ", -1)
                 else
-                    sampAddChatMessage("DeleteBat выключен", -1)
+                    sampAddChatMessage("DeleteBat РІС‹РєР»СЋС‡РµРЅ", -1)
                 end
                 saveCheckboxStates()
             end
             if imgui.Checkbox('AutoExit', autoexitdnk) then
                 if autoexitdnk[0] then
-                    sampAddChatMessage("AutoExitDNK включен", -1)
+                    sampAddChatMessage("AutoExitDNK РІРєР»СЋС‡РµРЅ", -1)
                 else
-                    sampAddChatMessage("AutoExitDNK выключен", -1)
+                    sampAddChatMessage("AutoExitDNK РІС‹РєР»СЋС‡РµРЅ", -1)
                 end
                 saveCheckboxStates()
             end
         else
-            imgui.Text(u8'AutoUseDrugs - /autous, при смерти автоматически использует нар%@#^#и. ')
-            imgui.Text(u8'/aza - [патроны в обойме] [количество патронов] - Докрафчивает патроны при указанном количестве.')
-            imgui.Text(u8'/cho - Чекер онлайна банд.')
-            imgui.Text(u8'AntiLomka - при ломке автоматом использует и сбивает нар%@#^#и. ')
-            imgui.Text(u8'DeleteNeon - убирает надписи/неон на машинах. ')
+            imgui.Text(u8'AutoUseDrugs - /autous, РїСЂРё СЃРјРµСЂС‚Рё Р°РІС‚РѕРјР°С‚РёС‡РµСЃРєРё РёСЃРїРѕР»СЊР·СѓРµС‚ РЅР°СЂ%@#^#Рё. ')
+            imgui.Text(u8'/aza - [РїР°С‚СЂРѕРЅС‹ РІ РѕР±РѕР№РјРµ] [РєРѕР»РёС‡РµСЃС‚РІРѕ РїР°С‚СЂРѕРЅРѕРІ] - Р”РѕРєСЂР°С„С‡РёРІР°РµС‚ РїР°С‚СЂРѕРЅС‹ РїСЂРё СѓРєР°Р·Р°РЅРЅРѕРј РєРѕР»РёС‡РµСЃС‚РІРµ.')
+            imgui.Text(u8'/cho - Р§РµРєРµСЂ РѕРЅР»Р°Р№РЅР° Р±Р°РЅРґ.')
+            imgui.Text(u8'AntiLomka - РїСЂРё Р»РѕРјРєРµ Р°РІС‚РѕРјР°С‚РѕРј РёСЃРїРѕР»СЊР·СѓРµС‚ Рё СЃР±РёРІР°РµС‚ РЅР°СЂ%@#^#Рё. ')
+            imgui.Text(u8'DeleteNeon - СѓР±РёСЂР°РµС‚ РЅР°РґРїРёСЃРё/РЅРµРѕРЅ РЅР° РјР°С€РёРЅР°С…. ')
         end
         local windowWidth = imgui.GetWindowWidth()
         local buttonSpacing = 10
         local totalWidth = 2 * 30 + buttonSpacing
-        imgui.SetCursorPosY(imgui.GetWindowHeight() - 70) -- Увеличил отступ для текста
+        imgui.SetCursorPosY(imgui.GetWindowHeight() - 50) -- РЈРІРµР»РёС‡РёР» РѕС‚СЃС‚СѓРї РґР»СЏ С‚РµРєСЃС‚Р°
         imgui.SetCursorPosX((windowWidth - totalWidth) / 2)
         if imgui.Button("1", imgui.ImVec2(30, 20)) then
             currentTab[0] = 0
@@ -404,10 +404,10 @@ local newFrame = imgui.OnFrame(
         if imgui.Button("2", imgui.ImVec2(30, 20)) then
             currentTab[0] = 1
         end
-        -- Добавленный текст
-        imgui.SetCursorPosY(imgui.GetWindowHeight() - 40) -- Позиция для текста
-        imgui.SetCursorPosX((windowWidth - imgui.CalcTextSize("author: tomasow, Нейросеть").x) / 2) -- Центрирование текста
-        imgui.Text("author: tomasow, Нейросеть")
+        -- Р”РѕР±Р°РІР»РµРЅРЅС‹Р№ С‚РµРєСЃС‚
+        imgui.SetCursorPosY(imgui.GetWindowHeight() - 20) -- РџРѕР·РёС†РёСЏ РґР»СЏ С‚РµРєСЃС‚Р°
+        imgui.SetCursorPosX((windowWidth - imgui.CalcTextSize("author: tomasow, РќРµР№СЂРѕСЃРµС‚СЊ").x) / 2) -- Р¦РµРЅС‚СЂРёСЂРѕРІР°РЅРёРµ С‚РµРєСЃС‚Р°
+        imgui.Text("author: tomasow, РќРµР№СЂРѕСЃРµС‚СЊ")
         imgui.End()
     end
 )
