@@ -1,7 +1,7 @@
 -- Объединенный скрипт
 
 script_name("TOMASOWHELPER")
-script_version("15.07.2025")
+script_version("16.07.2025")
 
 local imgui = require 'mimgui'
 local ffi = require 'ffi'
@@ -329,7 +329,7 @@ local newFrame = imgui.OnFrame(
         local sizeX, sizeY = 650, 600
         imgui.SetNextWindowPos(imgui.ImVec2(resX / 2, resY / 2), imgui.Cond.FirstUseEver, imgui.ImVec2(0.5, 0.5))
         imgui.SetNextWindowSize(imgui.ImVec2(sizeX, sizeY), imgui.Cond.FirstUseEver)
-        imgui.Begin('TOMASOW', renderWindow, imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoScrollWithMouse + imgui.WindowFlags.NoScrollbar)
+        imgui.Begin('TOMASOWHELPER', renderWindow, imgui.WindowFlags.NoCollapse + imgui.WindowFlags.NoResize + imgui.WindowFlags.NoScrollWithMouse + imgui.WindowFlags.NoScrollbar)
         if imhandle then
             imgui.Image(imhandle, imgui.ImVec2(550, 80))
         else
