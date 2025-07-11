@@ -1,7 +1,7 @@
 -- Объединенный скрипт
 
 script_name("moonloader-script-updater-example")
-script_version("15.07.2025")
+script_version("14.07.2025")
 
 local imgui = require 'mimgui'
 local ffi = require 'ffi'
